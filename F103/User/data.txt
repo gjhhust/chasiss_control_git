@@ -1,0 +1,4 @@
+snail电调：
+FrictionWheel_Set(350);   射速18.5m/s浮动
+FrictionWheel_Set(360);   射速20.7m/s浮动
+FrictionWheel_Set(370);   射速23m/s
