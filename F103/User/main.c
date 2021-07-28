@@ -23,10 +23,8 @@ int main(void)
 	
 	 startTast();
    vTaskStartScheduler();
-   while (1)
-   {
-        ;
-   }
+   while (1){}
+		 
 }
 
 
