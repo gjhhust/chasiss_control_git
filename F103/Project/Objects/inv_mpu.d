@@ -43,6 +43,8 @@
 .\objects\inv_mpu.o: ..\Hardware\include\encoder.h
 .\objects\inv_mpu.o: ..\Hardware\include\MPUIIC.h
 .\objects\inv_mpu.o: ..\Hardware\include\mpu6050.h
+.\objects\inv_mpu.o: ..\Hardware\include\usart.h
 .\objects\inv_mpu.o: ..\User\function\include\pid.h
 .\objects\inv_mpu.o: ..\User\TASK\include\Gyro.h
 .\objects\inv_mpu.o: ..\User\TASK\include\chassis.h
+.\objects\inv_mpu.o: ..\User\TASK\include\Data_Dispose.h

@@ -41,6 +41,8 @@
 .\objects\main.o: ..\Hardware\include\mpu6050.h
 .\objects\main.o: ..\Hardware\eMPL\inv_mpu.h
 .\objects\main.o: ..\Hardware\eMPL\inv_mpu_dmp_motion_driver.h
+.\objects\main.o: ..\Hardware\include\usart.h
 .\objects\main.o: ..\User\function\include\pid.h
 .\objects\main.o: ..\User\TASK\include\Gyro.h
 .\objects\main.o: ..\User\TASK\include\chassis.h
+.\objects\main.o: ..\User\TASK\include\Data_Dispose.h

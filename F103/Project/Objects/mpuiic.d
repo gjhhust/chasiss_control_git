@@ -42,6 +42,8 @@
 .\objects\mpuiic.o: ..\Hardware\include\mpu6050.h
 .\objects\mpuiic.o: ..\Hardware\eMPL\inv_mpu.h
 .\objects\mpuiic.o: ..\Hardware\eMPL\inv_mpu_dmp_motion_driver.h
+.\objects\mpuiic.o: ..\Hardware\include\usart.h
 .\objects\mpuiic.o: ..\User\function\include\pid.h
 .\objects\mpuiic.o: ..\User\TASK\include\Gyro.h
 .\objects\mpuiic.o: ..\User\TASK\include\chassis.h
+.\objects\mpuiic.o: ..\User\TASK\include\Data_Dispose.h

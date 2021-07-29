@@ -3,11 +3,8 @@
 Pid_Typedef Chassis_speed;
 Pid_Typedef Chassis_location;
 
-int leftSpeedNow=0;//左右电机当前速度
-int rightSpeedNow=0;
-int angle=0;//当前车体角度
-
-//extern unsigned char controlFlag;//如果需要控制命令符则可以修改该值
+Chassis F103RC_chassis={100,200,20,1};//底盘实时数据
+extern Ctrl_information chassis_ctrl;//上位机控制指令
 
 
 u16 led0pwmval=300;  
@@ -57,17 +54,17 @@ void CHASSIC_task(void *pvParameters){
 **********************************************************************************************************/
 void Chassis_CurrentPid_Cal(void)
 {
+	//速度赋值 
+	Chassis_speed.SetPoint = 100*chassis_ctrl.leftSpeedSet;
+	
+	
 	//获取当前速度并发送给上位机
-	Get_Motor_Speed(&leftSpeedNow,&rightSpeedNow);
+	Get_Motor_Speed(&F103RC_chassis.leftSpeedNow,&F103RC_chassis.rightSpeedNow);
 	
-	//将需要发送到ROS的数据，从该函数发出，前三个数据范围（-32768 - +32767），第四个数据的范围(0 - 255)
-	//usartSendData(leftSpeedNow,rightSpeedNow,angle,controlFlag);
-	//elay_ms(13);//必要的13ms延时
+	pid_motor_chose();
 	
-	
-	pid_speed_chose();
-	
-	TIM_SetCompare1(TIM1, PID_Calc(&Chassis_speed, rightSpeedNow));	
+	TIM_SetCompare1(TIM1, PID_Calc(&Chassis_speed, F103RC_chassis.rightSpeedNow));	
+	TIM_SetCompare2(TIM1, PID_Calc(&Chassis_speed, F103RC_chassis.leftSpeedNow));	
 	
 }
 
@@ -100,39 +97,63 @@ void PID_Param_Init(void)
 }
 
 /**********************************************************************************************************
-*函 数 名: pid_speed_chose
-*功能说明: 电机PID选择
+*函 数 名: pid_motor_chose
+*功能说明: 右电机PID选择
 *形    参: 无
 *返 回 值: 无
 **********************************************************************************************************/
 
-void pid_speed_chose(void)
+void pid_motor_chose(void)
 {
 //	Chassis_speed.P = 0.00003*rightSpeedNow*rightSpeedNow - 0.0122*rightSpeedNow + 10.012;
 //	Chassis_speed.I = 0.00005*rightSpeedNow*rightSpeedNow - 0.0197*rightSpeedNow + 2.2863;
 	
-	if(rightSpeedNow<250)
+	//右电机pid
+	if(F103RC_chassis.rightSpeedNow<250)
 	{
 		Chassis_speed.P = 9;
 		Chassis_speed.I = 0.5;
-	}else if(rightSpeedNow<300)
+	}else if(F103RC_chassis.rightSpeedNow<300)
 	{
 		Chassis_speed.P = 9;
 		Chassis_speed.I = 1;
-	}else if(rightSpeedNow<350)
+	}else if(F103RC_chassis.rightSpeedNow<350)
 	{
 		Chassis_speed.P = 9;
 		Chassis_speed.I = 1.3;
-	}else if(rightSpeedNow<380)
+	}else if(F103RC_chassis.rightSpeedNow<380)
 	{
 		Chassis_speed.P = 10;
 		Chassis_speed.I = 1.45;
 	}else 
 	{
 		Chassis_speed.P = 11;
-		Chassis_speed.I = 0.025*rightSpeedNow - 8.0862;	
+		Chassis_speed.I = 0.025*F103RC_chassis.rightSpeedNow - 8.0862;	
+	}
+	
+	//左电机pid
+	if(F103RC_chassis.leftSpeedNow<250)
+	{
+		Chassis_speed.P = 9;
+		Chassis_speed.I = 0.5;
+	}else if(F103RC_chassis.leftSpeedNow<300)
+	{
+		Chassis_speed.P = 9;
+		Chassis_speed.I = 1;
+	}else if(F103RC_chassis.leftSpeedNow<350)
+	{
+		Chassis_speed.P = 9;
+		Chassis_speed.I = 1.3;
+	}else if(F103RC_chassis.leftSpeedNow<380)
+	{
+		Chassis_speed.P = 10;
+		Chassis_speed.I = 1.45;
+	}else 
+	{
+		Chassis_speed.P = 11;
+		Chassis_speed.I = 0.025*F103RC_chassis.leftSpeedNow - 8.0862;	
 	}
 
+	
+
 }
-
-

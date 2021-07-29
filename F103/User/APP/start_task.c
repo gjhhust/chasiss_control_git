@@ -12,13 +12,23 @@ static TaskHandle_t StartTask_Handler; //任务句柄
 static TaskHandle_t chassis_Handler; //任务句柄
 
 //陀螺仪任务
-#define GYRO_TASK_PRIO 17  //任务优先级
+#define GYRO_TASK_PRIO 15  //任务优先级
 #define GYRO_STK_SIZE 256 //任务堆栈
 static TaskHandle_t Gyro_Handler; //任务句柄
+
+//数据发送任务
+#define DATA_DISPOSE_TASK_PRIO 19  //任务优先级
+#define DATA_DISPOSE_STK_SIZE 128 //任务堆栈
+static TaskHandle_t Data_Dispose_Handler; //任务句柄
+
 
 #define CPU_TASK_PRIO 5  //任务优先级
 #define CPU_STK_SIZE 256 //任务堆栈
 static TaskHandle_t CPUTask_Handler; //任务句柄
+
+uint8_t CPU_RunInfo1[200]; //保存任务运行时间信息 分别是：任务名 任务状态 优先级 剩余栈 任务序号
+uint8_t CPU_RunInfo2[200]; //保存任务运行时间信息 分别是：任务名 运行计数  使用率
+
 
 void start_task(void *pvParameters)
 {
@@ -39,6 +49,13 @@ void start_task(void *pvParameters)
                 (TaskHandle_t *)&chassis_Handler); //任务句柄
 		
 							
+	xTaskCreate((TaskFunction_t)DATA_DISPOSE_task,          //任务函数
+					(const char *)"DATA_DISPOSE_task",          //任务名称
+					(uint16_t)DATA_DISPOSE_STK_SIZE,            //任务堆栈大小
+					(void *)NULL,                        //传递给任务函数的参数
+					(UBaseType_t)DATA_DISPOSE_TASK_PRIO,        //任务优先级
+					(TaskHandle_t *)&Data_Dispose_Handler); //任务句柄
+					
 	xTaskCreate((TaskFunction_t)GYRO_task,          //任务函数
 					(const char *)"GYRO_task",          //任务名称
 					(uint16_t)GYRO_STK_SIZE,            //任务堆栈大小
@@ -57,8 +74,7 @@ void start_task(void *pvParameters)
 void CPU_task(void *pvParameters)
 {
 	
-	uint8_t CPU_RunInfo1[200]; //保存任务运行时间信息 分别是：任务名 任务状态 优先级 剩余栈 任务序号
-  uint8_t CPU_RunInfo2[200]; //保存任务运行时间信息 分别是：任务名 运行计数  使用率
+
 	
    while (1) {
     memset(CPU_RunInfo1,0,200); //信息缓冲区清零
@@ -68,7 +84,7 @@ void CPU_task(void *pvParameters)
     memset(CPU_RunInfo2,0,200); //信息缓冲区清零
  
     vTaskGetRunTimeStats((char *)&CPU_RunInfo2);
-    vTaskDelay(1000); /* 延时 500 个 tick */
+    vTaskDelay(10); /* 延时 500 个 tick */
 		 
 //#if INCLUDE_uxTaskGetStackHighWaterMark
 //        CPU_high_water = uxTaskGetStackHighWaterMark(NULL);

@@ -43,5 +43,7 @@ void BSP_init(void)
 	TIM6_Init();//作为计算转速定时器使用
 	
 	MPU_Init();
+	
+	UART2_DMA_Init();
 }
 

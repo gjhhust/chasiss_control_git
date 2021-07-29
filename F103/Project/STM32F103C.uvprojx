@@ -532,6 +532,11 @@
               <FileType>1</FileType>
               <FilePath>..\Hardware\eMPL\inv_mpu.c</FilePath>
             </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\uart.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -546,6 +551,11 @@
               <FileName>Gyro.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\TASK\Gyro.c</FilePath>
+            </File>
+            <File>
+              <FileName>Data_Dispose.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\TASK\Data_Dispose.c</FilePath>
             </File>
           </Files>
         </Group>

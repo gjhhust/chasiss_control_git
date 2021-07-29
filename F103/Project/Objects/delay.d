@@ -41,6 +41,8 @@
 .\objects\delay.o: ..\Hardware\include\mpu6050.h
 .\objects\delay.o: ..\Hardware\eMPL\inv_mpu.h
 .\objects\delay.o: ..\Hardware\eMPL\inv_mpu_dmp_motion_driver.h
+.\objects\delay.o: ..\Hardware\include\usart.h
 .\objects\delay.o: ..\User\function\include\pid.h
 .\objects\delay.o: ..\User\TASK\include\Gyro.h
 .\objects\delay.o: ..\User\TASK\include\chassis.h
+.\objects\delay.o: ..\User\TASK\include\Data_Dispose.h
