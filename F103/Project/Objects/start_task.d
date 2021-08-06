@@ -43,6 +43,7 @@
 .\objects\start_task.o: ..\Hardware\eMPL\inv_mpu.h
 .\objects\start_task.o: ..\Hardware\eMPL\inv_mpu_dmp_motion_driver.h
 .\objects\start_task.o: ..\Hardware\include\usart.h
+.\objects\start_task.o: ..\User\function\include\IIR.h
 .\objects\start_task.o: ..\User\function\include\pid.h
 .\objects\start_task.o: ..\User\TASK\include\Gyro.h
 .\objects\start_task.o: ..\User\TASK\include\chassis.h

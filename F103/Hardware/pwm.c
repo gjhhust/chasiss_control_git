@@ -62,7 +62,7 @@ void TIM1_PWM_Init(u16 arr,u16 psc)
 	
 	TIM_Cmd(TIM1, ENABLE);  //Ê¹ÄÜTIM1
  
-  GPIO_SetBits(GPIOA,IN1 | IN4); 
-	GPIO_ResetBits(GPIOA,IN2 | IN3); 
+  GPIO_SetBits(GPIOA,IN1 | IN3); 
+	GPIO_ResetBits(GPIOA,IN2 | IN4); 
 }
 

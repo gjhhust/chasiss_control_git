@@ -43,6 +43,7 @@
 .\objects\tim.o: ..\Hardware\eMPL\inv_mpu.h
 .\objects\tim.o: ..\Hardware\eMPL\inv_mpu_dmp_motion_driver.h
 .\objects\tim.o: ..\Hardware\include\usart.h
+.\objects\tim.o: ..\User\function\include\IIR.h
 .\objects\tim.o: ..\User\function\include\pid.h
 .\objects\tim.o: ..\User\TASK\include\Gyro.h
 .\objects\tim.o: ..\User\TASK\include\chassis.h

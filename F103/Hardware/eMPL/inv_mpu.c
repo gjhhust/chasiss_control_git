@@ -58,8 +58,8 @@
 //    return msp430_reg_int_cb(int_param->cb, int_param->pin, int_param->lp_exit,
 //        int_param->active_low);
 //}
-#define log_i 	printf	//打印信息
-#define log_e  	printf	//打印信息
+//#define log_i 	printf	//打印信息
+//#define log_e  	printf	//打印信息
 /* labs is already defined by TI's toolchain. */
 /* fabs is for doubles. fabsf is for floats. */
 #define fabs        fabsf
@@ -724,7 +724,7 @@ int mpu_reg_dump(void)
             continue;
         if (i2c_read(st.hw->addr, ii, 1, &data))
             return -1;
-        log_i("%#5x: %#5x\r\n", ii, data);
+
     }
     return 0;
 }
@@ -787,7 +787,7 @@ int mpu_init(void)
         else if (rev == 2)
             st.chip_cfg.accel_half = 0;
         else {
-            log_e("Unsupported software product rev %d.\n", rev);
+
             return -1;
         }
     } else {
@@ -795,11 +795,10 @@ int mpu_init(void)
             return -1;
         rev = data[0] & 0x0F;
         if (!rev) {
-            log_e("Product ID read as 0 indicates device is either "
-                "incompatible or an MPU3050.\n");
+
             return -1;
         } else if (rev == 4) {
-            log_i("Half sensitivity part found.\n");
+
             st.chip_cfg.accel_half = 1;
         } else
             st.chip_cfg.accel_half = 0;
@@ -2993,17 +2992,8 @@ u8 mpu_dmp_get_data(float *pitch,float *roll,float *yaw)
 	short gyro[3], accel[3], sensors;
 	unsigned char more;
 	long quat[4]; 
+	
 	if(dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors,&more))return 1;	 
-	/* Gyro and accel data are written to the FIFO by the DMP in chip frame and hardware units.
-	 * This behavior is convenient because it keeps the gyro and accel outputs of dmp_read_fifo and mpu_read_fifo consistent.
-	**/
-	/*if (sensors & INV_XYZ_GYRO )
-	send_packet(PACKET_TYPE_GYRO, gyro);
-	if (sensors & INV_XYZ_ACCEL)
-	send_packet(PACKET_TYPE_ACCEL, accel); */
-	/* Unlike gyro and accel, quaternions are written to the FIFO in the body frame, q30.
-	 * The orientation is set by the scalar passed to dmp_set_orientation during initialization. 
-	**/
 	if(sensors&INV_WXYZ_QUAT) 
 	{
 		q0 = quat[0] / q30;	//q30格式转换为浮点数
@@ -3011,12 +3001,13 @@ u8 mpu_dmp_get_data(float *pitch,float *roll,float *yaw)
 		q2 = quat[2] / q30;
 		q3 = quat[3] / q30; 
 		//计算得到俯仰角/横滚角/航向角
-		*pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;	// pitch
-		*roll  = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3;	// roll
+		//*pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;	// pitch
+		//*roll  = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3;	// roll
 		*yaw   = atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3;	//yaw
 	}else return 2;
 	return 0;
 }
+
 
 
 

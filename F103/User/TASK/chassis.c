@@ -1,14 +1,16 @@
 #include "chassis.h"
 
-Pid_Typedef Chassis_speed;
-Pid_Typedef Chassis_location;
-
+Pid_Typedef Chassis_speed_L;
+Pid_Typedef Chassis_speed_R;
 Chassis F103RC_chassis={100,200,20,1};//底盘实时数据
+
+
 extern Ctrl_information chassis_ctrl;//上位机控制指令
+extern float Input[2];
+extern float Output[2];
 
-
-u16 led0pwmval=300;  
-u16 led0pwmval2=0;  
+u16 led0pwmval=500;  
+u16 led0pwmval2=500;  
 int i=0;
 int flag=1;
 
@@ -55,19 +57,16 @@ void CHASSIC_task(void *pvParameters){
 void Chassis_CurrentPid_Cal(void)
 {
 	//速度赋值 
-	Chassis_speed.SetPoint = 100*chassis_ctrl.leftSpeedSet;
+	Chassis_speed_L.SetPoint = 100*chassis_ctrl.leftSpeedSet;
+	Chassis_speed_R.SetPoint = 100*chassis_ctrl.rightSpeedSet;
 	
 	
-	//获取当前速度并发送给上位机
-	Get_Motor_Speed(&F103RC_chassis.leftSpeedNow,&F103RC_chassis.rightSpeedNow);
-	
-	pid_motor_chose();
-	
-	TIM_SetCompare1(TIM1, PID_Calc(&Chassis_speed, F103RC_chassis.rightSpeedNow));	
-	TIM_SetCompare2(TIM1, PID_Calc(&Chassis_speed, F103RC_chassis.leftSpeedNow));	
-	
-}
+	//选择pid
+	pid_motor_chose(&Chassis_speed_L,Chassis_speed_L.SetPoint);
+	pid_motor_chose(&Chassis_speed_R,Chassis_speed_R.SetPoint);
 
+			
+}
 /**********************************************************************************************************
 *函 数 名: PID_Param_Init
 *功能说明: 电机PID初始化
@@ -76,15 +75,23 @@ void Chassis_CurrentPid_Cal(void)
 **********************************************************************************************************/
 void PID_Param_Init(void)
 {
-			//速度环（内环）
-		Chassis_speed.P = 0;
-		Chassis_speed.I = 0;
-		Chassis_speed.D = 0;
-		Chassis_speed.ErrorMax = 1000.0f;
-		Chassis_speed.IMax = 200;
-		Chassis_speed.SetPoint = 0.0f;	
-		Chassis_speed.OutMax = 890;	//最大占空比
+			//速度环左电机
+		Chassis_speed_L.P = 25;
+		Chassis_speed_L.I = 2;
+		Chassis_speed_L.D = 0;
+		Chassis_speed_L.ErrorMax = 1000.0f;
+		Chassis_speed_L.IMax = 200;
+		Chassis_speed_L.SetPoint = 0.0f;	
+		Chassis_speed_L.OutMax = 750;	//最大占空 速度为370-590
 	
+		//速度环右电机
+		Chassis_speed_R.P = 25;
+		Chassis_speed_R.I = 2;
+		Chassis_speed_R.D = 0;
+		Chassis_speed_R.ErrorMax = 1000.0f;
+		Chassis_speed_R.IMax = 200;
+		Chassis_speed_R.SetPoint = 0.0f;	
+		Chassis_speed_R.OutMax = 750;	//最大占空 速度为370-590
 	
 //		//位置环
 //		Chassis_location.P = 5.0f;
@@ -103,57 +110,12 @@ void PID_Param_Init(void)
 *返 回 值: 无
 **********************************************************************************************************/
 
-void pid_motor_chose(void)
+void pid_motor_chose(Pid_Typedef *P, int speed)
 {
-//	Chassis_speed.P = 0.00003*rightSpeedNow*rightSpeedNow - 0.0122*rightSpeedNow + 10.012;
-//	Chassis_speed.I = 0.00005*rightSpeedNow*rightSpeedNow - 0.0197*rightSpeedNow + 2.2863;
-	
-	//右电机pid
-	if(F103RC_chassis.rightSpeedNow<250)
-	{
-		Chassis_speed.P = 9;
-		Chassis_speed.I = 0.5;
-	}else if(F103RC_chassis.rightSpeedNow<300)
-	{
-		Chassis_speed.P = 9;
-		Chassis_speed.I = 1;
-	}else if(F103RC_chassis.rightSpeedNow<350)
-	{
-		Chassis_speed.P = 9;
-		Chassis_speed.I = 1.3;
-	}else if(F103RC_chassis.rightSpeedNow<380)
-	{
-		Chassis_speed.P = 10;
-		Chassis_speed.I = 1.45;
-	}else 
-	{
-		Chassis_speed.P = 11;
-		Chassis_speed.I = 0.025*F103RC_chassis.rightSpeedNow - 8.0862;	
-	}
-	
-	//左电机pid
-	if(F103RC_chassis.leftSpeedNow<250)
-	{
-		Chassis_speed.P = 9;
-		Chassis_speed.I = 0.5;
-	}else if(F103RC_chassis.leftSpeedNow<300)
-	{
-		Chassis_speed.P = 9;
-		Chassis_speed.I = 1;
-	}else if(F103RC_chassis.leftSpeedNow<350)
-	{
-		Chassis_speed.P = 9;
-		Chassis_speed.I = 1.3;
-	}else if(F103RC_chassis.leftSpeedNow<380)
-	{
-		Chassis_speed.P = 10;
-		Chassis_speed.I = 1.45;
-	}else 
-	{
-		Chassis_speed.P = 11;
-		Chassis_speed.I = 0.025*F103RC_chassis.leftSpeedNow - 8.0862;	
-	}
 
-	
+	//电机pid
+
+	P->I = 0.0005* speed * speed - 0.0199*speed + 2.23;
+		
 
 }

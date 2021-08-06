@@ -13,7 +13,7 @@ static TaskHandle_t chassis_Handler; //任务句柄
 
 //陀螺仪任务
 #define GYRO_TASK_PRIO 15  //任务优先级
-#define GYRO_STK_SIZE 256 //任务堆栈
+#define GYRO_STK_SIZE 512 //任务堆栈
 static TaskHandle_t Gyro_Handler; //任务句柄
 
 //数据发送任务

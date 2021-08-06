@@ -43,6 +43,7 @@
 .\objects\data_dispose.o: ..\Hardware\eMPL\inv_mpu.h
 .\objects\data_dispose.o: ..\Hardware\eMPL\inv_mpu_dmp_motion_driver.h
 .\objects\data_dispose.o: ..\Hardware\include\usart.h
+.\objects\data_dispose.o: ..\User\function\include\IIR.h
 .\objects\data_dispose.o: ..\User\function\include\pid.h
 .\objects\data_dispose.o: ..\User\TASK\include\Gyro.h
 .\objects\data_dispose.o: ..\User\TASK\include\chassis.h

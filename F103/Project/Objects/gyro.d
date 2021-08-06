@@ -43,6 +43,7 @@
 .\objects\gyro.o: ..\Hardware\eMPL\inv_mpu.h
 .\objects\gyro.o: ..\Hardware\eMPL\inv_mpu_dmp_motion_driver.h
 .\objects\gyro.o: ..\Hardware\include\usart.h
+.\objects\gyro.o: ..\User\function\include\IIR.h
 .\objects\gyro.o: ..\User\function\include\pid.h
 .\objects\gyro.o: ..\User\TASK\include\Gyro.h
 .\objects\gyro.o: ..\User\TASK\include\chassis.h

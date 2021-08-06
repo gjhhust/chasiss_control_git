@@ -17,7 +17,9 @@ void BSP_init(void);
 
 int main(void)
 {
-   BSP_init();
+
+
+ 	BSP_init();
    delay_ms(100);
 	
 	
@@ -42,7 +44,7 @@ void BSP_init(void)
 	Encoder_Init_TIM5();				//TIM5编码器模式初始化，A1、A2分别作为A相和B相的脉冲输入
 	TIM6_Init();//作为计算转速定时器使用
 	
-	MPU_Init();
+	mpu_dmp_init();
 	
 	UART2_DMA_Init();
 }

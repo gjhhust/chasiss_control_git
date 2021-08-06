@@ -20,7 +20,7 @@ void Chassis_CurrentPid_Cal(void);
 //pid初始化和动态调控
 void PID_Param_Init(void);
 
-void pid_motor_chose(void);//电机pid参数动态选择
+void pid_motor_chose(Pid_Typedef *P, int speed);//电机pid参数动态选择
 
 
 

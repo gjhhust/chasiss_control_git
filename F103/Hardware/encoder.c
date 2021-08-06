@@ -2,7 +2,9 @@
 
 extern int leftSpeedNow;//左右电机当前速度
 extern int rightSpeedNow;
-extern Pid_Typedef Chassis_speed;
+extern Chassis F103RC_chassis;
+extern Pid_Typedef Chassis_speed_L;
+extern Pid_Typedef Chassis_speed_R;
 /**************************************************************************
 函数功能：把TIM2初始化为编码器接口模式 右轮
 入口参数：无
@@ -100,6 +102,7 @@ s16 getTIMx_DetaCnt(TIM_TypeDef * TIMx)
                 //计算左右车轮线速度，正向速度为正值 ，反向速度为负值
                 //一定时间内的编码器变化值*转化率（转化为直线上的距离m）*200s（5ms计算一次） 得到 m/s *1000转化为int数据
 
+								1975.6 = 11 * 4 * 44.9
                 一圈的脉冲数：
                         左：  17
                         右：  17
@@ -124,8 +127,8 @@ void Get_Motor_Speed(int *leftSpeed,int *rightSpeed)
         rightWheelEncoderNow+= getTIMx_DetaCnt(TIM3);
                 
         //5ms测速            
-        *leftSpeed   = (leftWheelEncoderNow - leftWheelEncoderLast)*200*10*(0.13/17)/2;  //速度为mm/s
-        *rightSpeed  = (rightWheelEncoderNow - rightWheelEncoderLast)*200*10*(0.13/17)/2;
+        *leftSpeed   = 13 * (leftWheelEncoderNow - leftWheelEncoderLast)*200 / 1975.6;  //速度为cm/s
+        *rightSpeed  = 13 * (rightWheelEncoderNow - rightWheelEncoderLast)*200/ 1975.6;
 
         //记录上次编码器数据
         leftWheelEncoderLast  = leftWheelEncoderNow;                    
@@ -175,9 +178,24 @@ void TIM6_IRQHandler(void)   //TIM3中断
 {
 		if(TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源
 		{
+			static short pid_flag=0; 
+			pid_flag++;
+			
 			TIM_ClearITPendingBit(TIM6, TIM_IT_Update);   //清除TIMx的中断待处理位:TIM 中断源
 					 
-			Chassis_CurrentPid_Cal();
+			Get_Motor_Speed(&F103RC_chassis.leftSpeedNow,&F103RC_chassis.rightSpeedNow);
+			
+	
+			F103RC_chassis.rightSpeedNow = IIR_TICK_d_R(F103RC_chassis.rightSpeedNow);
+			F103RC_chassis.leftSpeedNow = IIR_TICK_d_L(F103RC_chassis.leftSpeedNow);
+			
+			if(pid_flag == 2){
+				TIM_SetCompare1(TIM1,PID_Calc(&Chassis_speed_R, F103RC_chassis.rightSpeedNow));	
+				TIM_SetCompare2(TIM1,PID_Calc(&Chassis_speed_L, F103RC_chassis.leftSpeedNow));	
+				pid_flag = 0;
+			}
+			
+			
 			
 		}
 }

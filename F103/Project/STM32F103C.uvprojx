@@ -632,6 +632,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\function\pid.c</FilePath>
             </File>
+            <File>
+              <FileName>IIR.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\function\IIR.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
