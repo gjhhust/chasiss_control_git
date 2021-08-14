@@ -10,7 +10,7 @@ extern Ctrl_information chassis_ctrl;//上位机控制指令
 extern float Input[2];
 extern float Output[2];
 
-int led0pwmval=500;  
+int led0pwmval=20;  
 int led0pwmval2=450;  
 int i=0;
 int flag=1;
@@ -61,6 +61,8 @@ void Chassis_CurrentPid_Cal(void)
 	//速度赋值 
 	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(chassis_ctrl.leftSpeedSet,70,-70);
 	Chassis_speed_R.SetPoint = LIMIT_MAX_MIN(chassis_ctrl.rightSpeedSet,70,-70);
+	//Chassis_speed_L.SetPoint = led0pwmval;
+	//Chassis_speed_R.SetPoint = led0pwmval;
 	
 	//直线标定
 	//goto_1m();
@@ -71,7 +73,6 @@ void Chassis_CurrentPid_Cal(void)
 	//获得航向角
 	GYRO();
 
-	
 	//选择pid
 	pid_motor_chose(&Chassis_speed_L,Chassis_speed_L.SetPoint);
 	pid_motor_chose(&Chassis_speed_R,Chassis_speed_R.SetPoint);
@@ -92,8 +93,8 @@ void goto_1m(void){
 		Chassis_position.SetPoint = 100;//1m
 		set_des_flag = 1;
 	}	
-	Chassis_speed_L.SetPoint = position_PID_Calc(&Chassis_position, positionNow);
-	Chassis_speed_R.SetPoint = position_PID_Calc(&Chassis_position, positionNow);
+	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),30,-30);
+	Chassis_speed_R.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),30,-30);
 	
 }
 /**********************************************************************************************************

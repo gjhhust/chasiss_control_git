@@ -20,7 +20,7 @@ int main(void)
 
 
 	 BSP_init();
-   delay_ms(200);
+   delay_ms(500);
 	
 	
 	 startTast();
