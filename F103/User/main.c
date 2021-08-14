@@ -2,7 +2,7 @@
 
 /*************************************************
 包含接线说明
-1.电机左 TIM1_pwm:PA8 逻辑控制PA10 PA12  编码器:TIM3 :PA7  PA6
+1.电机右 TIM1_pwm:PA8 逻辑控制PA10 PA12  编码器:TIM3 :PA7  PA6
 2.电机左 TIM1_pwm:PA9 逻辑控制PA11 PA15	 编码器:TIM5 :PA0  PA1
 3.MPU6050(Gyro) IIC: 	SCL_PB10
 											SDA_PB11
@@ -19,8 +19,8 @@ int main(void)
 {
 
 
- 	BSP_init();
-   delay_ms(100);
+	 BSP_init();
+   delay_ms(200);
 	
 	
 	 startTast();

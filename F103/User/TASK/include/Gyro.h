@@ -3,7 +3,7 @@
 #include "main.h"
 
 
-void GYRO_task(void *pvParameters);
-
+//void GYRO_task(void *pvParameters);
+void GYRO(void);
 
 #endif

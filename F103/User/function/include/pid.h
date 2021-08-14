@@ -22,5 +22,17 @@ typedef struct PID{
 	  float OutMax;       //限幅
 }Pid_Typedef;
 
-float PID_Calc(Pid_Typedef * P, float ActualValue);
+struct _pid{
+	float target_val; 
+	float actual_val; 
+	float err;
+	float err_next; 
+	float err_last; 
+	float Kp, Ki, Kd;
+	int out_Max;//输出最大值
+};
+typedef struct _pid pid;
+
+float speed_PID_Calc(Pid_Typedef *P, float ActualValue);
+float position_PID_Calc(Pid_Typedef *P, float ActualValue);
 #endif

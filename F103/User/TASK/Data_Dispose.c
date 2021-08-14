@@ -15,6 +15,11 @@ const unsigned char ender[2]   = {0x0d, 0x0a};
 //注意：这里数据中预留了一个字节的控制位，其他的可以自行扩展，更改size和数据
 --------------------------------------------------------------------------*/
 
+/*--------------------------------控制位-----------------------------------
+
+8位由高到底分别是
+软件复位 左轮方向 右轮方向 
+--------------------------------------------------------------------------*/
 
 /**************************************************************************
 通信的发送函数和接收函数必须的一些常量、变量、共用体对象
@@ -24,7 +29,7 @@ extern unsigned char JudgeSend[SendBiggestSize];//发送最大内存
 
 unsigned char SaveBuffer[200];//接受双缓存区
 
-Ctrl_information chassis_ctrl ={0}; //接受上位机控制信息
+Ctrl_information chassis_ctrl ={0,0,0,1,1}; //接受上位机控制信息
 extern Chassis F103RC_chassis;//底盘实时数据
          
 
@@ -123,12 +128,14 @@ void usartSendData(short leftVel, short rightVel,short angle,unsigned char ctrlF
 	//发送字符串数据
 		/*****数据上传*****/
 
-	USART_ClearFlag(USART2,USART_FLAG_TC);
-	for(i=0;i<13;i++)
-	{
-	  USART_SendData(USART2,JudgeSend[i]);
-	  while (USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET); //等待之前的字符发送完成
-	}
+//	USART_ClearFlag(USART2,USART_FLAG_TC);
+//	for(i=0;i<13;i++)
+//	{
+//	  USART_SendData(USART2,JudgeSend[i]);
+//	  while (USART_GetFlagStatus(USART2,USART_FLAG_TC) == RESET); //等待之前的字符发送完成
+//	}
+	DMA1_Channel7->CNDTR = SendBiggestSize; 
+	DMA_Cmd(DMA1_Channel7,ENABLE);
 }
 
 /**************************************************************************
@@ -168,20 +175,19 @@ unsigned char getCrc8(unsigned char *ptr, unsigned short len)
 *形    参: 无
 *返 回 值: 无
 **********************************************************************************************************/
-void DATA_DISPOSE_task(void *pvParameters){
+//void DATA_DISPOSE_task(void *pvParameters){
 
-	
-	while(1)
-	{
- 
-		
-		//将需要发送到ROS的数据，从该函数发出，前三个数据范围（-32768 - +32767），第四个数据的范围(0 - 255)
-		usartSendData(F103RC_chassis.leftSpeedNow,F103RC_chassis.rightSpeedNow,F103RC_chassis.angle,F103RC_chassis.controlFlag);
-		
-		//IMUupdate(gyrox, gyroy, gyroz, aacx, aacy,aacz);
-			
-		vTaskDelay(20); 
+//	
+//	while(1)
+//	{
+// 
+//		
+//		
+//		
+//		//IMUupdate(gyrox, gyroy, gyroz, aacx, aacy,aacz);
+//			
+//		vTaskDelay(20); 
 
-	}
+//	}
 
-}
+//}

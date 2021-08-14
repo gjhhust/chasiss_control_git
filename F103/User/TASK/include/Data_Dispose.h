@@ -19,6 +19,10 @@
 #define START   0X11
 #define reBiggestSize 13
 #define SendBiggestSize  13
+//控制位
+#define Reset 0x01
+#define Stop  0x02
+
 
 //发送数据（左轮速、右轮速、角度）共用体（-32767 - +32768）
 typedef union 
@@ -40,10 +44,12 @@ typedef struct{
 	int leftSpeedSet;
 	int rightSpeedSet;
 	unsigned char crtlFlag;
+	char left_move;//为1时方向为正
+	char right_move;
 }Ctrl_information;
 
 
-void DATA_DISPOSE_task(void *pvParameters);
+//void DATA_DISPOSE_task(void *pvParameters);
 	
 //串口接受中断中接收函数
 void usartReceiveData(void);

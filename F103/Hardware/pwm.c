@@ -12,8 +12,8 @@ void TIM1_PWM_Init(u16 arr,u16 psc)
 	TIM_OCInitTypeDef  TIM_OCInitStructure;
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1 | RCC_APB2Periph_AFIO, ENABLE);// 
- 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA , ENABLE);  //使能GPIO外设时钟使能
-	                                                                     	
+ 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);  //使能GPIO外设时钟使能
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);                                                                     	
 
    //设置该引脚为复用输出功能,输出TIM1 CH1的PWM脉冲波形
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8; //TIM_CH1
@@ -26,11 +26,18 @@ void TIM1_PWM_Init(u16 arr,u16 psc)
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
-	//电机A口控制的IN1 2 3 4
-	GPIO_InitStructure.GPIO_Pin = IN1 | IN2 | IN3 | IN4; //TIM_CH1
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  //复用推挽输出
+	//电机A口控制
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 |GPIO_Pin_12 ; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  //推挽输出
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);	
+	GPIO_ResetBits(GPIOA,GPIO_Pin_11 |GPIO_Pin_12); //所有引脚拉低
+
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14; 
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  //推挽输出
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);	
+	GPIO_ResetBits(GPIOB,GPIO_Pin_14 | GPIO_Pin_13); //引脚拉低
 	
 	
 	
@@ -62,7 +69,40 @@ void TIM1_PWM_Init(u16 arr,u16 psc)
 	
 	TIM_Cmd(TIM1, ENABLE);  //使能TIM1
  
-  GPIO_SetBits(GPIOA,IN1 | IN3); 
-	GPIO_ResetBits(GPIOA,IN2 | IN4); 
+
+
 }
 
+
+void motor_R_move(void)
+{
+	PBout(13) = 0;
+	PBout(14) = 1;
+}
+void motor_R_back(void)
+{
+	PBout(13) = 1;
+	PBout(14) = 0;
+}
+
+void motor_R_stop(void)
+{
+	PBout(13) = 0;
+	PBout(14) = 0;
+}
+void motor_L_move(void)
+{
+	PAout(11) = 0;
+	PAout(12) = 1;
+}
+void motor_L_back(void)
+{
+	PAout(11) = 1;
+	PAout(12) = 0;
+}
+
+void motor_L_stop(void)
+{
+	PAout(11) = 0;
+	PAout(12) = 0;	
+}

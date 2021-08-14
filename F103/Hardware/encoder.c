@@ -110,9 +110,6 @@ s16 getTIMx_DetaCnt(TIM_TypeDef * TIMx)
                 一个脉冲的距离：
                         左： 0.13/17
                         右： 0.13/17
-                速度分辨率：
-                        左：0.0120m/s 12.0mm/s
-                        右：0.0181m/s 18.1mm/s
 **************************************************************************/
 
 void Get_Motor_Speed(int *leftSpeed,int *rightSpeed)
@@ -167,36 +164,5 @@ void TIM6_Init(void)
 		TIM_Cmd(TIM6, ENABLE); 		
 }
 
-/**********************************************************************************************************
-*函 数 名: TIM6_IRQHandler
-*功能说明: 调整pid
-*形    参: 无
-*返 回 值: 无
-**********************************************************************************************************/
-//5ms进一次中断采样
-void TIM6_IRQHandler(void)   //TIM3中断
-{
-		if(TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源
-		{
-			static short pid_flag=0; 
-			pid_flag++;
-			
-			TIM_ClearITPendingBit(TIM6, TIM_IT_Update);   //清除TIMx的中断待处理位:TIM 中断源
-					 
-			Get_Motor_Speed(&F103RC_chassis.leftSpeedNow,&F103RC_chassis.rightSpeedNow);
-			
-	
-			F103RC_chassis.rightSpeedNow = IIR_TICK_d_R(F103RC_chassis.rightSpeedNow);
-			F103RC_chassis.leftSpeedNow = IIR_TICK_d_L(F103RC_chassis.leftSpeedNow);
-			
-			if(pid_flag == 2){
-				TIM_SetCompare1(TIM1,PID_Calc(&Chassis_speed_R, F103RC_chassis.rightSpeedNow));	
-				TIM_SetCompare2(TIM1,PID_Calc(&Chassis_speed_L, F103RC_chassis.leftSpeedNow));	
-				pid_flag = 0;
-			}
-			
-			
-			
-		}
-}
+
 

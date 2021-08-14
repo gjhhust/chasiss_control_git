@@ -107,12 +107,13 @@ void UART2_DMA_Init(void)
 			dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
 			dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
 			dma.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
-			dma.DMA_Mode = DMA_Mode_Circular;
+			dma.DMA_Mode = DMA_Mode_Normal;
 			dma.DMA_Priority = DMA_Priority_VeryHigh;
 			dma.DMA_M2M = DMA_M2M_Disable;
 
 			DMA_Init(DMA1_Channel7,&dma);
 			DMA_ITConfig(DMA1_Channel7,DMA_IT_TC,ENABLE);
+			DMA_ITConfig(DMA1_Channel7, DMA1_FLAG_GL7,ENABLE);
 			DMA_Cmd(DMA1_Channel7,DISABLE);
 	 }		
 }
@@ -134,8 +135,8 @@ void DMA1_Channel7_IRQHandler(void)
 {
 	if(DMA_GetITStatus(DMA1_IT_TC7)!=RESET)
 	{
-		DMA_ClearFlag(DMA1_FLAG_TC7);
-		DMA_ClearITPendingBit(DMA1_IT_TC7);
+		DMA_ClearFlag(DMA1_FLAG_TC7 | DMA1_FLAG_GL7);
+		DMA_ClearITPendingBit(DMA1_IT_TC7 | DMA1_FLAG_GL7);
 		
 		DMA_Cmd(DMA1_Channel7,DISABLE);
 	}	

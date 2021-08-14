@@ -3,14 +3,15 @@
 
 #include "main.h"
 
-
-typedef struct
+struct chassis
 {
 	int leftSpeedNow;//左右电机当前速度
 	int rightSpeedNow;
-	int angle;//当前车体角度
+	int angle;//当前车体角度,100倍发送
 	int controlFlag;//控制指令
-}Chassis;
+	int speed_error;//失控累计
+};
+typedef struct chassis Chassis;
 
 void CHASSIC_task(void *pvParameters);
 
@@ -19,10 +20,20 @@ void Chassis_CurrentPid_Cal(void);
 
 //pid初始化和动态调控
 void PID_Param_Init(void);
+//电机pid参数动态选择
+void pid_motor_chose(Pid_Typedef *P, int speed);
 
-void pid_motor_chose(Pid_Typedef *P, int speed);//电机pid参数动态选择
+//选择电机转向
+void motor_direction(void);
 
 
+//直线走1m标定
+void goto_1m(void);
+
+//控制操作
+void control(void);
+void SoftReset(void);
+void SpeedReset(void);
 
 #endif
 
