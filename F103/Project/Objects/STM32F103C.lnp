@@ -39,6 +39,9 @@
 ".\objects\start_task.o"
 ".\objects\pid.o"
 ".\objects\iir.o"
+".\objects\bsp_esp8266_test.o"
+".\objects\bsp_esp8266.o"
+".\objects\common.o"
 --strict --scatter ".\Objects\STM32F103C.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

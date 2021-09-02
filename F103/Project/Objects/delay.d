@@ -18,9 +18,9 @@
 .\objects\delay.o: ..\Libraries\stm32f10x_usart.h
 .\objects\delay.o: ..\Libraries\misc.h
 .\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\delay.o: ..\User\FreeRTOSConfig.h
 .\objects\delay.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -47,3 +47,7 @@
 .\objects\delay.o: ..\User\TASK\include\Gyro.h
 .\objects\delay.o: ..\User\TASK\include\chassis.h
 .\objects\delay.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\delay.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\delay.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\delay.o: ..\Hardware\ESP8266\common.h
+.\objects\delay.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

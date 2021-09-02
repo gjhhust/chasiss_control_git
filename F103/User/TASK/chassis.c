@@ -10,8 +10,8 @@ extern Ctrl_information chassis_ctrl;//上位机控制指令
 extern float Input[2];
 extern float Output[2];
 
-int led0pwmval=20;  
-int led0pwmval2=450;  
+int led0pwmval=0;  
+int led0pwmval2=0;  
 int i=0;
 int flag=1;
 double positionNow=0;
@@ -36,8 +36,9 @@ void CHASSIC_task(void *pvParameters){
  
 		Chassis_CurrentPid_Cal();
 
+		//ESP8266_CheckRecvDataTest();
 		
-		vTaskDelay(1); /* 延时 500 个 tick */
+		//vTaskDelay(1); /* 延时 500 个 tick */
 	
 		xLastWakeTime = xTaskGetTickCount();
 				
@@ -59,11 +60,11 @@ void CHASSIC_task(void *pvParameters){
 void Chassis_CurrentPid_Cal(void)
 {
 	//速度赋值 
-	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(chassis_ctrl.leftSpeedSet,70,-70);
-	Chassis_speed_R.SetPoint = LIMIT_MAX_MIN(chassis_ctrl.rightSpeedSet,70,-70);
-	//Chassis_speed_L.SetPoint = led0pwmval;
-	//Chassis_speed_R.SetPoint = led0pwmval;
-	
+	Chassis_speed_L.SetPoint =led0pwmval;// LIMIT_MAX_MIN(chassis_ctrl.leftSpeedSet,40,-40);
+	Chassis_speed_R.SetPoint =led0pwmval;// LIMIT_MAX_MIN(chassis_ctrl.rightSpeedSet,40,-40);
+	//TIM_SetCompare1(TIM1,led0pwmval);
+	//TIM_SetCompare2(TIM1,led0pwmval);
+
 	//直线标定
 	//goto_1m();
 	
@@ -93,12 +94,12 @@ void goto_1m(void){
 		Chassis_position.SetPoint = 100;//1m
 		set_des_flag = 1;
 	}	
-	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),30,-30);
-	Chassis_speed_R.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),30,-30);
+	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),40,-40);
+	Chassis_speed_R.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),40,-40);
 	
 }
 /**********************************************************************************************************
-*函 数 名: PID_Param_Init
+*函 数 名: motor_direction
 *功能说明: 电机方向选择
 *形    参: 无
 *返 回 值: 无
@@ -135,21 +136,21 @@ void PID_Param_Init(void)
 {
 			//速度环左电机
 		Chassis_speed_L.P = 28;
-		Chassis_speed_L.I = 2;
+		Chassis_speed_L.I = 2.5;
 		Chassis_speed_L.D = 0;
 		Chassis_speed_L.ErrorMax = 1000.0f;
 		Chassis_speed_L.IMax = 200;
 		Chassis_speed_L.SetPoint = 0.0f;	
-		Chassis_speed_L.OutMax = 750;	//最大占空 速度为370-590
+		Chassis_speed_L.OutMax = 500;	//最大占空 速度为370-590
 	
 		//速度环右电机
-		Chassis_speed_R.P = 25;
-		Chassis_speed_R.I = 2;
+		Chassis_speed_R.P = 28;
+		Chassis_speed_R.I = 2.5;
 		Chassis_speed_R.D = 0;
 		Chassis_speed_R.ErrorMax = 1000.0f;
 		Chassis_speed_R.IMax = 200;
 		Chassis_speed_R.SetPoint = 0.0f;	
-		Chassis_speed_R.OutMax = 750;	//最大占空 速度为370-590
+		Chassis_speed_R.OutMax = 500;	//最大占空 速度为370-590
 	
 		//位置环
 		Chassis_position.P = 2.0f;
@@ -170,12 +171,13 @@ void PID_Param_Init(void)
 
 void pid_motor_chose(Pid_Typedef *P, int speed)
 {
-
+	speed = ABS(speed);
 	//电机pid
-	if(speed<71)
-	P->I = 0.0005* speed * speed - 0.0199*speed + 2.23;
+	if(speed<30)
+	P->I = 2.8;
+	if(speed>=30&&speed<=35) P->I = 3;
+	if(speed>35) P->I = 3.3;
 
-	if(P == &Chassis_speed_L) P->I = 0.0005* speed * speed - 0.0199*speed + 2.52;
 	
 }
 
@@ -253,10 +255,9 @@ void SpeedReset(void)
 *返 回 值: 无
 **********************************************************************************************************/
 //5ms进一次中断采样
-extern int led0pwmval;  
-extern int led0pwmval2; 
 static short pid_flag=0; 
 static short data_send_flag=0;
+static short ESP8266_send_flag=0;
 void TIM6_IRQHandler(void)   //TIM3中断
 {
 		if(TIM_GetITStatus(TIM6, TIM_IT_Update) != RESET) //检查指定的TIM中断发生与否:TIM 中断源
@@ -297,6 +298,15 @@ void TIM6_IRQHandler(void)   //TIM3中断
 			
 			
 				//速度失控
-			if(F103RC_chassis.rightSpeedNow>71 || F103RC_chassis.rightSpeedNow > 71) F103RC_chassis.speed_error++;
+			if(F103RC_chassis.rightSpeedNow>42 || F103RC_chassis.rightSpeedNow > 42) F103RC_chassis.speed_error++;
+			
+			
+//			ESP8266_send_flag++;
+//			if(ESP8266_send_flag == 400)
+//			{
+//				ESP8266_SendInf();
+//				ESP8266_send_flag=0;
+//			}
+
 		}
 }

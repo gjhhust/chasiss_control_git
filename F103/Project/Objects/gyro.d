@@ -19,9 +19,9 @@
 .\objects\gyro.o: ..\Libraries\stm32f10x_usart.h
 .\objects\gyro.o: ..\Libraries\misc.h
 .\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\gyro.o: ..\User\FreeRTOSConfig.h
 .\objects\gyro.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -48,3 +48,7 @@
 .\objects\gyro.o: ..\User\TASK\include\Gyro.h
 .\objects\gyro.o: ..\User\TASK\include\chassis.h
 .\objects\gyro.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\gyro.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\gyro.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\gyro.o: ..\Hardware\ESP8266\common.h
+.\objects\gyro.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

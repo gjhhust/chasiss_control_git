@@ -19,9 +19,9 @@
 .\objects\mpuiic.o: ..\Libraries\stm32f10x_usart.h
 .\objects\mpuiic.o: ..\Libraries\misc.h
 .\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\mpuiic.o: ..\User\FreeRTOSConfig.h
 .\objects\mpuiic.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -48,3 +48,7 @@
 .\objects\mpuiic.o: ..\User\TASK\include\Gyro.h
 .\objects\mpuiic.o: ..\User\TASK\include\chassis.h
 .\objects\mpuiic.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\mpuiic.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\mpuiic.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\mpuiic.o: ..\Hardware\ESP8266\common.h
+.\objects\mpuiic.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

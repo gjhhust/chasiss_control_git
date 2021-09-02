@@ -19,9 +19,9 @@
 .\objects\encoder.o: ..\Libraries\stm32f10x_usart.h
 .\objects\encoder.o: ..\Libraries\misc.h
 .\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\encoder.o: ..\User\FreeRTOSConfig.h
 .\objects\encoder.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -48,3 +48,7 @@
 .\objects\encoder.o: ..\User\TASK\include\Gyro.h
 .\objects\encoder.o: ..\User\TASK\include\chassis.h
 .\objects\encoder.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\encoder.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\encoder.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\encoder.o: ..\Hardware\ESP8266\common.h
+.\objects\encoder.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

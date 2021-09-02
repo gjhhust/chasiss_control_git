@@ -2,10 +2,10 @@
 #define __MAIN_H__
 
 #include "stm32f10x.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h>  
+#include <string.h>  
+#include <stdbool.h>
 #include "math.h"
-#include "string.h"
 #include "FreeRTOSConfig.h"
 #include "FreeRTOS.h"
 #include "start_task.h" 
@@ -27,6 +27,14 @@
 #include "Gyro.h"
 #include "chassis.h"
 #include "Data_Dispose.h"
+
+
+//wifiÄ£¿é
+#include "bsp_esp8266_test.h"
+#include "bsp_esp8266.h"
+#include "common.h"
+#include <stdarg.h>
+
 //IO??????
 #define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2)) 
 #define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr)) 

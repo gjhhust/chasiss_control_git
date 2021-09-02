@@ -19,9 +19,9 @@
 .\objects\data_dispose.o: ..\Libraries\stm32f10x_usart.h
 .\objects\data_dispose.o: ..\Libraries\misc.h
 .\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\data_dispose.o: ..\User\FreeRTOSConfig.h
 .\objects\data_dispose.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -48,3 +48,7 @@
 .\objects\data_dispose.o: ..\User\TASK\include\Gyro.h
 .\objects\data_dispose.o: ..\User\TASK\include\chassis.h
 .\objects\data_dispose.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\data_dispose.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\data_dispose.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\data_dispose.o: ..\Hardware\ESP8266\common.h
+.\objects\data_dispose.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

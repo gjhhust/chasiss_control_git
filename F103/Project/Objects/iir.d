@@ -18,9 +18,9 @@
 .\objects\iir.o: ..\Libraries\stm32f10x_usart.h
 .\objects\iir.o: ..\Libraries\misc.h
 .\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\iir.o: ..\User\FreeRTOSConfig.h
 .\objects\iir.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -47,3 +47,7 @@
 .\objects\iir.o: ..\User\TASK\include\Gyro.h
 .\objects\iir.o: ..\User\TASK\include\chassis.h
 .\objects\iir.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\iir.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\iir.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\iir.o: ..\Hardware\ESP8266\common.h
+.\objects\iir.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

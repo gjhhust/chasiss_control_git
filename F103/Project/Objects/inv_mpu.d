@@ -25,6 +25,7 @@
 .\objects\inv_mpu.o: ..\Hardware\include\mpu6050.h
 .\objects\inv_mpu.o: ..\Hardware\include\mpuiic.h
 .\objects\inv_mpu.o: ..\User\main.h
+.\objects\inv_mpu.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\inv_mpu.o: ..\User\FreeRTOSConfig.h
 .\objects\inv_mpu.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\inv_mpu.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -49,3 +50,7 @@
 .\objects\inv_mpu.o: ..\User\TASK\include\Gyro.h
 .\objects\inv_mpu.o: ..\User\TASK\include\chassis.h
 .\objects\inv_mpu.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\inv_mpu.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\inv_mpu.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\inv_mpu.o: ..\Hardware\ESP8266\common.h
+.\objects\inv_mpu.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

@@ -2,8 +2,8 @@
 
 /*************************************************
 包含接线说明
-1.电机右 TIM1_pwm:PA8 逻辑控制PA10 PA12  编码器:TIM3 :PA7  PA6
-2.电机左 TIM1_pwm:PA9 逻辑控制PA11 PA15	 编码器:TIM5 :PA0  PA1
+1.电机右 TIM1_pwm:PA10 逻辑控制PA10 PC10  编码器:TIM3 :PA7  PA6
+2.电机左 TIM1_pwm:PA9 逻辑控制PC7 PC9	 编码器:TIM5 :PA0  PA 1
 3.MPU6050(Gyro) IIC: 	SCL_PB10
 											SDA_PB11
   
@@ -47,5 +47,9 @@ void BSP_init(void)
 	mpu_dmp_init();
 	
 	UART2_DMA_Init();
+	
+	
+	//ESP8266_Init ();                                                        //初始化WiFi模块使用的接口和外设
+	//ESP8266_StaTcpClient_Unvarnish_ConfigTest();       //模式设置
 }
 

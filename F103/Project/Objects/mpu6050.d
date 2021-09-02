@@ -20,9 +20,9 @@
 .\objects\mpu6050.o: ..\Libraries\stm32f10x_usart.h
 .\objects\mpu6050.o: ..\Libraries\misc.h
 .\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\mpu6050.o: ..\User\FreeRTOSConfig.h
 .\objects\mpu6050.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -49,3 +49,7 @@
 .\objects\mpu6050.o: ..\User\TASK\include\Gyro.h
 .\objects\mpu6050.o: ..\User\TASK\include\chassis.h
 .\objects\mpu6050.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\mpu6050.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\mpu6050.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\mpu6050.o: ..\Hardware\ESP8266\common.h
+.\objects\mpu6050.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

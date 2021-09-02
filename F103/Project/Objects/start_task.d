@@ -19,9 +19,9 @@
 .\objects\start_task.o: ..\Libraries\stm32f10x_usart.h
 .\objects\start_task.o: ..\Libraries\misc.h
 .\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\string.h
+.\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\math.h
 .\objects\start_task.o: ..\User\FreeRTOSConfig.h
 .\objects\start_task.o: ..\FreeRTOS\include\FreeRTOS.h
 .\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stddef.h
@@ -48,3 +48,7 @@
 .\objects\start_task.o: ..\User\TASK\include\Gyro.h
 .\objects\start_task.o: ..\User\TASK\include\chassis.h
 .\objects\start_task.o: ..\User\TASK\include\Data_Dispose.h
+.\objects\start_task.o: ..\Hardware\ESP8266\bsp_esp8266_test.h
+.\objects\start_task.o: ..\Hardware\ESP8266\bsp_esp8266.h
+.\objects\start_task.o: ..\Hardware\ESP8266\common.h
+.\objects\start_task.o: D:\keilFile\ARM\ARMCC\Bin\..\include\stdarg.h

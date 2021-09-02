@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries;..\CM3;..\User;..\Hardware;..\FreeRTOS\src;..\FreeRTOS\port\MemMang;..\FreeRTOS\port\RVDS\ARM_CM3;..\FreeRTOS\include;..\User\APP;..\User\TASK\include;..\Hardware\include;..\User\function\include;..\User\function\include;..\Hardware\eMPL</IncludePath>
+              <IncludePath>..\Libraries;..\CM3;..\User;..\Hardware;..\FreeRTOS\src;..\FreeRTOS\port\MemMang;..\FreeRTOS\port\RVDS\ARM_CM3;..\FreeRTOS\include;..\User\APP;..\User\TASK\include;..\Hardware\include;..\User\function\include;..\User\function\include;..\Hardware\eMPL;..\Hardware\ESP8266</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -636,6 +636,26 @@
               <FileName>IIR.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\function\IIR.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ESP8266</GroupName>
+          <Files>
+            <File>
+              <FileName>bsp_esp8266_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\ESP8266\bsp_esp8266_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_esp8266.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\ESP8266\bsp_esp8266.c</FilePath>
+            </File>
+            <File>
+              <FileName>Common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\ESP8266\Common.c</FilePath>
             </File>
           </Files>
         </Group>
