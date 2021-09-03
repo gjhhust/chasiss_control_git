@@ -102,8 +102,8 @@ s16 getTIMx_DetaCnt(TIM_TypeDef * TIMx)
                 //计算左右车轮线速度，正向速度为正值 ，反向速度为负值
                 //一定时间内的编码器变化值*转化率（转化为直线上的距离m）*200s（5ms计算一次） 得到 m/s *1000转化为int数据
 								
-							
-								右1504 = 11 * 4 * 34.2
+							 左 3300 = 11 4 75
+							右 1980 = 11 * 4 * 45
                 一圈的脉冲数：
                         左：  11
                         右：  11
@@ -125,8 +125,9 @@ void Get_Motor_Speed(int *leftSpeed,int *rightSpeed)
         rightWheelEncoderNow+= getTIMx_DetaCnt(TIM3);
                 
         //5ms测速            
-        *leftSpeed   = 13 * (leftWheelEncoderNow - leftWheelEncoderLast)*200 /  1504;  //速度为cm/s
-        *rightSpeed  = 13 * (rightWheelEncoderNow - rightWheelEncoderLast)*200/ 1504;
+				//变大测速会使得该轮子跑慢
+        *leftSpeed   =  0.75  * 13 * (leftWheelEncoderNow - leftWheelEncoderLast) * 200 /  3300;  //速度为cm/s
+        *rightSpeed  =  0.88  * 13 * (rightWheelEncoderNow - rightWheelEncoderLast)* 200 / 1980;
 
         //记录上次编码器数据
         leftWheelEncoderLast  = leftWheelEncoderNow;                    

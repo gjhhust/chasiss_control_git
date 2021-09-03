@@ -3,6 +3,7 @@
 Pid_Typedef Chassis_speed_L;
 Pid_Typedef Chassis_speed_R;
 Pid_Typedef Chassis_position;
+pid speed_L;
 Chassis F103RC_chassis={100,200,20,1,0};//底盘实时数据
 
 
@@ -60,13 +61,13 @@ void CHASSIC_task(void *pvParameters){
 void Chassis_CurrentPid_Cal(void)
 {
 	//速度赋值 
-	Chassis_speed_L.SetPoint =led0pwmval;// LIMIT_MAX_MIN(chassis_ctrl.leftSpeedSet,40,-40);
-	Chassis_speed_R.SetPoint =led0pwmval;// LIMIT_MAX_MIN(chassis_ctrl.rightSpeedSet,40,-40);
+	//Chassis_speed_L.SetPoint = led0pwmval;//LIMIT_MAX_MIN(chassis_ctrl.leftSpeedSet,50,-50);
+	//Chassis_speed_R.SetPoint = led0pwmval;//LIMIT_MAX_MIN(chassis_ctrl.rightSpeedSet,50,-50);
 	//TIM_SetCompare1(TIM1,led0pwmval);
 	//TIM_SetCompare2(TIM1,led0pwmval);
 
 	//直线标定
-	//goto_1m();
+	goto_1m();
 	
 	//上位机控制位
 	control();
@@ -75,11 +76,11 @@ void Chassis_CurrentPid_Cal(void)
 	GYRO();
 
 	//选择pid
-	pid_motor_chose(&Chassis_speed_L,Chassis_speed_L.SetPoint);
-	pid_motor_chose(&Chassis_speed_R,Chassis_speed_R.SetPoint);
+	//pid_motor_chose(&Chassis_speed_L,Chassis_speed_L.SetPoint);
+	//pid_motor_chose(&Chassis_speed_R,Chassis_speed_R.SetPoint);
 	
 	//速度过大出错复位
-	if( F103RC_chassis.speed_error >500) SpeedReset(), F103RC_chassis.speed_error=0;		
+	//if( F103RC_chassis.speed_error >500) SpeedReset(), F103RC_chassis.speed_error=0;		
 }
 
 /**********************************************************************************************************
@@ -94,8 +95,8 @@ void goto_1m(void){
 		Chassis_position.SetPoint = 100;//1m
 		set_des_flag = 1;
 	}	
-	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),40,-40);
-	Chassis_speed_R.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),40,-40);
+	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(position_PID_Calc(&Chassis_position, positionNow),35,-35);
+	Chassis_speed_R.SetPoint = Chassis_speed_L.SetPoint;
 	
 }
 /**********************************************************************************************************
@@ -104,27 +105,23 @@ void goto_1m(void){
 *形    参: 无
 *返 回 值: 无
 **********************************************************************************************************/
-void motor_direction(void)
+int motor_direction(int ID,int Value)
 {
-	if(Chassis_speed_L.SetPoint<0)
-	{
-		motor_L_back();
-	}else
-	{
-		motor_L_move();
+	
+	switch(ID){
+		case left:
+			if(Value>0) motor_L_move();
+		  else  motor_L_back();
+			break;
+		case right:
+			if(Value>0) motor_R_move();
+		  else  motor_R_back();
+			break;
 	}
-	
-	
-	if(Chassis_speed_R.SetPoint<0)
-	{
-		motor_R_back();
-	}else
-	{
-		motor_R_move();
-	}
-	
-	if(Chassis_speed_L.SetPoint == 0)motor_L_stop();
-	if(Chassis_speed_R.SetPoint == 0)motor_R_stop();
+	if(Chassis_speed_R.SetPoint==0)motor_R_stop();
+	if(Chassis_speed_L.SetPoint==0)motor_L_stop();
+		
+	return ABS(Value);
 }
 /**********************************************************************************************************
 *函 数 名: PID_Param_Init
@@ -141,7 +138,8 @@ void PID_Param_Init(void)
 		Chassis_speed_L.ErrorMax = 1000.0f;
 		Chassis_speed_L.IMax = 200;
 		Chassis_speed_L.SetPoint = 0.0f;	
-		Chassis_speed_L.OutMax = 500;	//最大占空 速度为370-590
+		Chassis_speed_L.SumError = 0.0f;	
+		Chassis_speed_L.OutMax = 800;	//最大占空 速度为370-590
 	
 		//速度环右电机
 		Chassis_speed_R.P = 28;
@@ -149,8 +147,9 @@ void PID_Param_Init(void)
 		Chassis_speed_R.D = 0;
 		Chassis_speed_R.ErrorMax = 1000.0f;
 		Chassis_speed_R.IMax = 200;
-		Chassis_speed_R.SetPoint = 0.0f;	
-		Chassis_speed_R.OutMax = 500;	//最大占空 速度为370-590
+		Chassis_speed_R.SetPoint = 0.0f;
+		Chassis_speed_R.SumError = 0.0f;		
+		Chassis_speed_R.OutMax = 800;	//最大占空 速度为370-590
 	
 		//位置环
 		Chassis_position.P = 2.0f;
@@ -159,7 +158,16 @@ void PID_Param_Init(void)
 		Chassis_position.ErrorMax = 1000.0f;
 		Chassis_position.IMax = 1000.0f;
 		Chassis_position.SetPoint = 0.0f;	
-		Chassis_position.OutMax = 70;	
+		Chassis_position.OutMax = 35;	
+		
+		/* 初始化参数 */
+	speed_L.target_val=100.0; 
+	speed_L.actual_val=0.0; 
+	speed_L.err=0.0;
+	speed_L.err_last=0.0; 
+	speed_L.integral=0.0;
+	
+	speed_L.Kp = 13; speed_L.Ki = 3.5; speed_L.Kd = 0.04;
 }
 
 /**********************************************************************************************************
@@ -235,7 +243,7 @@ void SpeedReset(void)
 	Chassis_speed_L.SumError = 0;
 	Chassis_speed_L.LastError = 0;
 	Chassis_speed_L.PreError = 0;
-	motor_R_move();
+	motor_R_stop();
 	
 	Chassis_speed_R.SetPoint = 0;
 	Chassis_speed_R.I = 0;
@@ -243,7 +251,7 @@ void SpeedReset(void)
 	Chassis_speed_R.SumError = 0;
 	Chassis_speed_R.LastError = 0;
 	Chassis_speed_R.PreError = 0;
-	motor_R_move();
+	motor_R_stop();
 }
 
 
@@ -279,9 +287,17 @@ void TIM6_IRQHandler(void)   //TIM3中断
 			//电机控制
 			if(pid_flag == 2){
 					//选择电机方向
-				motor_direction();
-				TIM_SetCompare1(TIM1,speed_PID_Calc(&Chassis_speed_R, F103RC_chassis.rightSpeedNow));	//led0pwmval);//
-				TIM_SetCompare2(TIM1,speed_PID_Calc(&Chassis_speed_L, F103RC_chassis.leftSpeedNow));	
+//					if(Chassis_speed_L.SetPoint>0) motor_L_move();
+//					else if(Chassis_speed_L.SetPoint<0) motor_L_back();
+//					else   motor_L_stop();
+//				
+//					if(Chassis_speed_R.SetPoint>0) motor_R_move();
+//					else  if(Chassis_speed_R.SetPoint<0) motor_R_back();
+//					else  motor_R_stop();
+				TIM_SetCompare2(TIM1,motor_direction(left,speed_PID_Calc(&Chassis_speed_L, F103RC_chassis.leftSpeedNow)));	//led0pwmval);//
+				TIM_SetCompare1(TIM1,motor_direction(right,speed_PID_Calc(&Chassis_speed_R, F103RC_chassis.rightSpeedNow)));	
+//				TIM_SetCompare2(TIM1,speed_PID_Calc(&Chassis_speed_L, F103RC_chassis.leftSpeedNow));	//led0pwmval);//
+//				TIM_SetCompare1(TIM1,speed_PID_Calc(&Chassis_speed_R, F103RC_chassis.rightSpeedNow));
 				pid_flag = 0;
 			}
 			
@@ -294,11 +310,10 @@ void TIM6_IRQHandler(void)   //TIM3中断
 			
 			
 			//标定使用
-			positionNow += (F103RC_chassis.rightSpeedNow*0.005 + F103RC_chassis.leftSpeedNow*0.005 ) / 2;
-			
+			positionNow +=  (F103RC_chassis.rightSpeedNow*0.005 + F103RC_chassis.leftSpeedNow*0.005 ) / 2;
 			
 				//速度失控
-			if(F103RC_chassis.rightSpeedNow>42 || F103RC_chassis.rightSpeedNow > 42) F103RC_chassis.speed_error++;
+			//if(F103RC_chassis.rightSpeedNow>42 || F103RC_chassis.rightSpeedNow > 42) F103RC_chassis.speed_error++;
 			
 			
 //			ESP8266_send_flag++;

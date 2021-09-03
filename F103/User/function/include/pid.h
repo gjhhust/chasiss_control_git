@@ -29,10 +29,13 @@ struct _pid{
 	float err_next; 
 	float err_last; 
 	float Kp, Ki, Kd;
+	float integral; //定义积分值
 	int out_Max;//输出最大值
 };
-typedef struct _pid pid;
 
+typedef struct _pid pid;
+float PID_realize(pid * P,float actual_val);
+float PID_Calc(Pid_Typedef *P, float ActualValue);
 float speed_PID_Calc(Pid_Typedef *P, float ActualValue);
 float position_PID_Calc(Pid_Typedef *P, float ActualValue);
 #endif

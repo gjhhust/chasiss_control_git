@@ -31,7 +31,7 @@ float speed_PID_Calc(Pid_Typedef *P, float ActualValue)
 		P->DOut = P->D * P->dError;
 		
 		
-		return ABS(LIMIT_MAX_MIN(P->POut+P->IOut+P->DOut,P->OutMax,-P->OutMax)); 
+		return LIMIT_MAX_MIN(P->POut+P->IOut+P->DOut,P->OutMax,-P->OutMax); 
 }
 	//只输出正负都会
 float position_PID_Calc(Pid_Typedef *P, float ActualValue)
@@ -63,15 +63,17 @@ float position_PID_Calc(Pid_Typedef *P, float ActualValue)
 
 
 float PID_realize(pid * P,float actual_val) {
-	/* 计算目标值与实际值的误差 */
-	P->err=P->target_val-actual_val; /*PID 算法实现 */
-	P->actual_val += P->Kp*(P->err -P->err_next) 
-									+ P->Ki*P->err
-									+ P->Kd*(P->err - 2 * P->err_next +P->err_last);
+/* 计算目标值与实际值的误差 */
+	P->err=P->target_val-actual_val; 
+	/* 误差累积 */
+	P->integral+=P->err; 
+	/*PID 算法实现 */
+	P->actual_val=P->Kp*P->err+P->Ki*P->integral+P->Kd*(P->err-P->err_last); 
 	
+	/* 误差传递 */
+	P->err_last=P->err; 
 	
-	/* 传递误差 */
-	P->err_last = P->err_next; P->err_next = P->err; /* 返回当前实际值 */
-	return LIMIT_MAX_MIN(P->actual_val,P->out_Max,-P->out_Max);;
+	/* 返回当前实际值 */
+	return LIMIT_MAX_MIN(P->actual_val,P->out_Max,-P->out_Max);
 }
 

@@ -12,7 +12,9 @@ struct chassis
 	int speed_error;//失控累计
 };
 typedef struct chassis Chassis;
-
+enum motorID{
+right,left
+};
 void CHASSIC_task(void *pvParameters);
 
 //根据上位机传来的速度指令进行运动
@@ -24,7 +26,7 @@ void PID_Param_Init(void);
 void pid_motor_chose(Pid_Typedef *P, int speed);
 
 //选择电机转向
-void motor_direction(void);
+int motor_direction(int ID,int Value);//返回占空比
 
 
 //直线走1m标定
