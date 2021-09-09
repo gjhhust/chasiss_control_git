@@ -19,8 +19,8 @@ int main(void)
 {
 
 
-	 BSP_init();
-   delay_ms(1500);
+ 	 BSP_init();  
+   delay_ms(500);
 	
 	
 	 startTast();

@@ -11,7 +11,7 @@ extern Ctrl_information chassis_ctrl;//上位机控制指令
 extern float Input[2];
 extern float Output[2];
 
-int led0pwmval=0;  
+int led0pwmval=20;  
 int led0pwmval2=0;  
 int i=0;
 int flag=1;
@@ -61,13 +61,13 @@ void CHASSIC_task(void *pvParameters){
 void Chassis_CurrentPid_Cal(void)
 {
 	//速度赋值 
-	//Chassis_speed_L.SetPoint = led0pwmval;//LIMIT_MAX_MIN(chassis_ctrl.leftSpeedSet,50,-50);
-	//Chassis_speed_R.SetPoint = led0pwmval;//LIMIT_MAX_MIN(chassis_ctrl.rightSpeedSet,50,-50);
+	Chassis_speed_L.SetPoint = LIMIT_MAX_MIN(chassis_ctrl.leftSpeedSet,35,-35);
+	Chassis_speed_R.SetPoint = LIMIT_MAX_MIN(chassis_ctrl.rightSpeedSet,35,-35);
 	//TIM_SetCompare1(TIM1,led0pwmval);
 	//TIM_SetCompare2(TIM1,led0pwmval);
 
 	//直线标定
-	goto_1m();
+	//goto_1m();
 	
 	//上位机控制位
 	control();
@@ -76,8 +76,8 @@ void Chassis_CurrentPid_Cal(void)
 	GYRO();
 
 	//选择pid
-	//pid_motor_chose(&Chassis_speed_L,Chassis_speed_L.SetPoint);
-	//pid_motor_chose(&Chassis_speed_R,Chassis_speed_R.SetPoint);
+	pid_motor_chose(&Chassis_speed_L,Chassis_speed_L.SetPoint);
+	pid_motor_chose(&Chassis_speed_R,Chassis_speed_R.SetPoint);
 	
 	//速度过大出错复位
 	//if( F103RC_chassis.speed_error >500) SpeedReset(), F103RC_chassis.speed_error=0;		
@@ -156,9 +156,9 @@ void PID_Param_Init(void)
 		Chassis_position.I = 0;
 		Chassis_position.D = 2;
 		Chassis_position.ErrorMax = 1000.0f;
-		Chassis_position.IMax = 1000.0f;
+		Chassis_position.IMax = 200.0f;
 		Chassis_position.SetPoint = 0.0f;	
-		Chassis_position.OutMax = 35;	
+		Chassis_position.OutMax = 40;	
 		
 		/* 初始化参数 */
 	speed_L.target_val=100.0; 
@@ -181,10 +181,8 @@ void pid_motor_chose(Pid_Typedef *P, int speed)
 {
 	speed = ABS(speed);
 	//电机pid
-	if(speed<30)
-	P->I = 2.8;
-	if(speed>=30&&speed<=35) P->I = 3;
-	if(speed>35) P->I = 3.3;
+	if(speed<50)
+	P->I = 0.0005* speed * speed - 0.0199*speed + 3.0;
 
 	
 }

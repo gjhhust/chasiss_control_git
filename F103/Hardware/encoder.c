@@ -126,8 +126,8 @@ void Get_Motor_Speed(int *leftSpeed,int *rightSpeed)
                 
         //5ms测速            
 				//变大测速会使得该轮子跑慢
-        *leftSpeed   =  0.75  * 13 * (leftWheelEncoderNow - leftWheelEncoderLast) * 200 /  3300;  //速度为cm/s
-        *rightSpeed  =  0.88  * 13 * (rightWheelEncoderNow - rightWheelEncoderLast)* 200 / 1980;
+        *leftSpeed   =    13 * (leftWheelEncoderNow - leftWheelEncoderLast) * 200 /  1980;  //速度为cm/s
+        *rightSpeed  =    13 * (rightWheelEncoderNow - rightWheelEncoderLast)* 200 / 1980;
 
         //记录上次编码器数据
         leftWheelEncoderLast  = leftWheelEncoderNow;                    
